@@ -1,19 +1,20 @@
 #!/usr/bin/runghc
-import Control.Monad (unless)
-import qualified System as S
+import           Control.Monad (unless)
+import qualified System.Exit as SE
+import qualified System.Process as SP
 
 sh :: String -> IO ()
 sh cmd = do
-  x <- S.system cmd
+  x <- SP.system cmd
   case x of
-       S.ExitFailure _ -> error $ "[ERROR]" ++ cmd ++ " failed."
+       SE.ExitFailure _ -> error $ "[ERROR]" ++ cmd ++ " failed."
        _ -> return ()
 
 hasCabalDev :: IO Bool
 hasCabalDev = do
-  x <- S.system "which cabal-dev"
+  x <- SP.system "which cabal-dev"
   case x of
-       S.ExitFailure _ -> return False
+       SE.ExitFailure _ -> return False
        _ -> return True
 
 main :: IO ()
@@ -24,6 +25,6 @@ main = do
     sh "cabal install cabal-dev"
   unless hasCabalDev' $ do
     putStrLn "add cabal binary files dir to your $PATH"
-    S.exitFailure
+    SE.exitFailure
   sh "cabal-dev install --only-dependencies"
   sh "cabal-dev configure"
