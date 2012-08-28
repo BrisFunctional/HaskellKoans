@@ -1,8 +1,12 @@
 #!/bin/bash
 
-cabal-dev build &&
-./dist/build/koans/koans -t "BasicFunctions" --hide-successes &&
-./dist/build/koans/koans -t "Currification" --hide-successes &&
-./dist/build/koans/koans -t "BasicIO" --hide-successes &&
+while true; do
+
+inotifywait -q -e modify ./test  && \
+cabal-dev build && \
+./dist/build/koans/koans -t "BasicFunctions" --hide-successes && \
+./dist/build/koans/koans -t "Currification" --hide-successes && \
+./dist/build/koans/koans -t "BasicIO" --hide-successes && \
 ./dist/build/koans/koans -t "ParserCombinators" --hide-successes
 
+done

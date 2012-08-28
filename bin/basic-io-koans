@@ -1,4 +1,10 @@
 #!/bin/bash
 
-cabal-dev build && ./dist/build/koans/koans -t "BasicIO" --hide-successes
+KOAN=BasicIO
 
+while true; do
+
+inotifywait -q -e modify ./test/$KOAN.hs  && \
+cabal-dev build && ./dist/build/koans/koans -t $KOAN --hide-successes
+
+done
